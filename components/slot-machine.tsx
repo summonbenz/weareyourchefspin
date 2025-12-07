@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 
@@ -12,6 +12,24 @@ export default function SlotMachine() {
   const digitColors = ['text-purple-600', 'text-blue-600', 'text-green-600']
   const borderColors = ['border-purple-600', 'border-blue-600', 'border-green-600']
 
+  useEffect(() => {
+    let interval: NodeJS.Timeout | null = null
+
+    if (isSpinning.some(Boolean)) {
+      interval = setInterval(() => {
+        setSpinningDigits([
+          Array.from({ length: 10 }, () => Math.floor(Math.random() * 3) + 1),
+          Array.from({ length: 10 }, () => Math.floor(Math.random() * 3) + 1),
+          Array.from({ length: 10 }, () => Math.floor(Math.random() * 3) + 1),
+        ])
+      }, 100) // Update every 100ms
+    }
+
+    return () => {
+      if (interval) clearInterval(interval)
+    }
+  }, [isSpinning])
+
   const spinSlots = async () => {
     if (isSpinning.some(Boolean)) return
 
@@ -21,14 +39,6 @@ export default function SlotMachine() {
       Math.floor(Math.random() * 3) + 1,
       Math.floor(Math.random() * 3) + 1,
     ]
-
-    // Generate random spinning digits for each slot
-    const newSpinningDigits = [
-      Array.from({ length: 10 }, () => Math.floor(Math.random() * 3) + 1),
-      Array.from({ length: 10 }, () => Math.floor(Math.random() * 3) + 1),
-      Array.from({ length: 10 }, () => Math.floor(Math.random() * 3) + 1),
-    ]
-    setSpinningDigits(newSpinningDigits)
 
     // Start spinning all slots
     setIsSpinning([true, true, true])
