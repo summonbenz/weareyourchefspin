@@ -7,6 +7,7 @@ import { Card } from "@/components/ui/card"
 export default function SlotMachine() {
   const [numbers, setNumbers] = useState<number[]>([1, 2, 3])
   const [isSpinning, setIsSpinning] = useState([false, false, false])
+  const [spinningDigits, setSpinningDigits] = useState<number[][]>([[], [], []])
 
   const digitColors = ['text-purple-600', 'text-blue-600', 'text-green-600']
   const borderColors = ['border-purple-600', 'border-blue-600', 'border-green-600']
@@ -20,6 +21,14 @@ export default function SlotMachine() {
       Math.floor(Math.random() * 3) + 1,
       Math.floor(Math.random() * 3) + 1,
     ]
+
+    // Generate random spinning digits for each slot
+    const newSpinningDigits = [
+      Array.from({ length: 10 }, () => Math.floor(Math.random() * 3) + 1),
+      Array.from({ length: 10 }, () => Math.floor(Math.random() * 3) + 1),
+      Array.from({ length: 10 }, () => Math.floor(Math.random() * 3) + 1),
+    ]
+    setSpinningDigits(newSpinningDigits)
 
     // Start spinning all slots
     setIsSpinning([true, true, true])
@@ -61,10 +70,9 @@ export default function SlotMachine() {
                 <div className={`text-6xl font-bold ${digitColors[index]} ${isSpinning[index] ? "animate-spin-slot" : ""}`}>
                   {isSpinning[index] ? (
                     <div className="flex flex-col gap-4">
-                      <span>1</span>
-                      <span>2</span>
-                      <span>3</span>
-                      <span>1</span>
+                      {spinningDigits[index].map((digit, i) => (
+                        <span key={i}>{digit}</span>
+                      ))}
                     </div>
                   ) : (
                     num
