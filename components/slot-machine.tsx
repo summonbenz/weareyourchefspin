@@ -6,25 +6,36 @@ import { Card } from "@/components/ui/card"
 
 export default function SlotMachine() {
   const [numbers, setNumbers] = useState<number[]>([1, 2, 3])
-  const [isSpinning, setIsSpinning] = useState(false)
+  const [isSpinning, setIsSpinning] = useState([false, false, false])
 
   const spinSlots = async () => {
-    if (isSpinning) return
+    if (isSpinning.some(Boolean)) return
 
-    setIsSpinning(true)
-
-    // Generate random numbers
+    // Generate final random numbers
     const newNumbers = [
       Math.floor(Math.random() * 3) + 1,
       Math.floor(Math.random() * 3) + 1,
       Math.floor(Math.random() * 3) + 1,
     ]
 
-    // Animate for 2 seconds
-    await new Promise((resolve) => setTimeout(resolve, 2000))
+    // Start spinning all slots
+    setIsSpinning([true, true, true])
 
-    setNumbers(newNumbers)
-    setIsSpinning(false)
+    // Stop each slot at different times for staggered effect
+    setTimeout(() => {
+      setIsSpinning(prev => [false, prev[1], prev[2]])
+      setNumbers(prev => [newNumbers[0], prev[1], prev[2]])
+    }, 2000)
+
+    setTimeout(() => {
+      setIsSpinning(prev => [prev[0], false, prev[2]])
+      setNumbers(prev => [prev[0], newNumbers[1], prev[2]])
+    }, 2500)
+
+    setTimeout(() => {
+      setIsSpinning([false, false, false])
+      setNumbers(newNumbers)
+    }, 3000)
   }
 
   return (
@@ -44,8 +55,8 @@ export default function SlotMachine() {
               className="relative w-24 h-32 bg-secondary rounded-lg border-4 border-primary overflow-hidden shadow-lg shadow-primary/30"
             >
               <div className="absolute inset-0 flex items-center justify-center">
-                <div className={`text-6xl font-bold text-primary ${isSpinning ? "animate-spin-slot" : ""}`}>
-                  {isSpinning ? (
+                <div className={`text-6xl font-bold text-primary ${isSpinning[index] ? "animate-spin-slot" : ""}`}>
+                  {isSpinning[index] ? (
                     <div className="flex flex-col gap-4">
                       <span>1</span>
                       <span>2</span>
@@ -63,11 +74,11 @@ export default function SlotMachine() {
 
         <Button
           onClick={spinSlots}
-          disabled={isSpinning}
+          disabled={isSpinning.some(Boolean)}
           size="lg"
           className="w-full text-xl font-bold h-14 bg-white hover:bg-white/90 text-black shadow-lg shadow-primary/50 transition-all duration-300"
         >
-          {isSpinning ? "Spinning..." : "SPIN"}
+          {isSpinning.some(Boolean) ? "Spinning..." : "SPIN"}
         </Button>
       </Card>
 
