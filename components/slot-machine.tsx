@@ -79,9 +79,9 @@ export default function SlotMachine() {
           onClick={spinSlots}
           disabled={isSpinning.some(Boolean)}
           size="lg"
-          className="w-full text-xl font-bold h-14 bg-purple-600 hover:bg-purple-700 text-white shadow-lg shadow-purple-600/50 transition-all duration-300"
+          className="w-full text-xl font-semibold h-14 bg-purple-600 hover:bg-purple-700 text-white shadow-lg shadow-purple-600/50 transition-all duration-300"
         >
-          {isSpinning.some(Boolean) ? "Spinning..." : "SPIN"}
+          {isSpinning.some(Boolean) ? "หมุนๆๆๆ~" : "จิ้มเลย"}
         </Button>
       </Card>
 
