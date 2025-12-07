@@ -50,7 +50,7 @@ export default function SlotMachine() {
         <p className="text-muted-foreground text-lg">{"วันนี้จะได้ดื่มอะไรดีน้า!"}</p>
       </div>
 
-      <Card className="p-8 bg-card shadow-2xl border-2 border-accent shadow-primary/20">
+      <Card className="p-8 shadow-2xl border-2 border-accent shadow-primary/20">
         <div className="flex gap-4 mb-8">
           {numbers.map((num, index) => (
             <div
